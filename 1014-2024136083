@@ -1,0 +1,23 @@
+size만큼 #(또는 .)이 출력되는 가로세로 출력하는 코드
+
+var size = 10;
+for (var y = 0; y < size; y++){
+  var line = '';
+  for (var x = 0; x < size; x++){
+  var condition = x ==y;
+  if (condition){
+    line += '#';
+    }
+  }
+  print(line);
+}
+}
+
+#으로 이루어진 정사각형 출력 코드
+void main(){
+print('####');
+print('####');
+print('####');
+print('####');
+}
+
