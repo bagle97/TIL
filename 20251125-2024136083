@@ -1,0 +1,10 @@
+GitHub Copilot Pro 하는 법
+
+1. antigravity 를 google에 검색하기
+2. Download for Windows 다음, Download for x64 다운로드
+3. 다운로드후 Anigravity.exe 실행
+4. 설치 시 모두 기본 설정 후 google계정 연결
+5. flutter extention 설치할 것
+6. 실행 오른쪽 Agent 창에서, Fast 모드 선택 및 Gemini 3 Pro(High) 모델 선택
+7. "플러터로 주사위 게임을 만들어줘."
+**잘 안될 경우 'flutter create dice_game'으로 플러터 프로젝트를 생성한 후, 해당 디렉토리에서 'antigravity . '실행**
