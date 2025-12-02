@@ -1,0 +1,193 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+
+void main() => runApp(const BallApp());
+
+class BallApp extends StatelessWidget {
+  const BallApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SafeArea(child: BallPlayground()),
+      ),
+    );
+  }
+}
+
+class BallPlayground extends StatefulWidget {
+  const BallPlayground({super.key});
+  @override
+  State<BallPlayground> createState() => _BallPlaygroundState();
+}
+
+class _BallPlaygroundState extends State<BallPlayground> with SingleTickerProviderStateMixin {
+  // 물리값 (픽셀 단위)
+  static const double gravity = 2000.0; // px/s^2
+  static const double restitution = 0.82; // 튕김 계수
+  static const double airFriction = 0.999; // 공기 저항(간단한 속도 감소)
+  static const double maxInitialSpeed = 5000.0; // 안전한 최대 속도
+
+  late Ticker _ticker;
+  Duration _last = Duration.zero;
+
+  Offset position = const Offset(200, 200);
+  Offset velocity = Offset.zero;
+  double radius = 36.0;
+
+  bool dragging = false;
+
+  Size areaSize = Size.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _ticker = createTicker(_tick)..start();
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    super.dispose();
+  }
+
+  void _tick(Duration now) {
+    if (_last == Duration.zero) {
+      _last = now;
+      return;
+    }
+    final dt = (now - _last).inMicroseconds / 1e6;
+    _last = now;
+    if (dt <= 0 || dt > 0.1) return;
+
+    if (!dragging) {
+      // 중력 적용 (아래 방향)
+      final vy = velocity.dy + gravity * dt;
+      var vx = velocity.dx * pow(airFriction, dt * 60);
+      var v = Offset(vx, vy);
+
+      var pos = position + v * dt;
+
+      // 벽 충돌 검사 및 반발 처리
+      // 왼쪽
+      if (pos.dx - radius < 0) {
+        pos = Offset(radius + (radius - (pos.dx - radius)), pos.dy);
+        v = Offset(-v.dx * restitution, v.dy);
+      }
+      // 오른쪽
+      if (pos.dx + radius > areaSize.width) {
+        pos = Offset(areaSize.width - radius - (pos.dx + radius - areaSize.width), pos.dy);
+        v = Offset(-v.dx * restitution, v.dy);
+      }
+      // 위
+      if (pos.dy - radius < 0) {
+        pos = Offset(pos.dx, radius + (radius - (pos.dy - radius)));
+        v = Offset(v.dx, -v.dy * restitution);
+      }
+      // 아래
+      if (pos.dy + radius > areaSize.height) {
+        pos = Offset(pos.dx, areaSize.height - radius - (pos.dy + radius - areaSize.height));
+        v = Offset(v.dx, -v.dy * restitution);
+
+        // 바닥에 거의 정지하면 속도 제거 (안정화)
+        if (v.distance < 15) v = Offset.zero;
+      }
+
+      setState(() {
+        position = pos;
+        velocity = v;
+      });
+    }
+  }
+
+  void _onPanStart(DragStartDetails d) {
+    final local = d.localPosition;
+    if ((local - position).distance <= radius + 10) {
+      setState(() {
+        dragging = true;
+        velocity = Offset.zero;
+      });
+    }
+  }
+
+  void _onPanUpdate(DragUpdateDetails d) {
+    if (!dragging) return;
+    setState(() {
+      position += d.delta;
+      // 영역 밖으로 나가지 않게 보정
+      position = Offset(
+        position.dx.clamp(radius, areaSize.width - radius),
+        position.dy.clamp(radius, areaSize.height - radius),
+      );
+    });
+  }
+
+  void _onPanEnd(DragEndDetails d) {
+    if (!dragging) return;
+    // 제스처 속도를 초기 속도로 사용
+    final rawV = d.velocity.pixelsPerSecond;
+    // 속도가 너무 크면 제한
+    final speed = rawV.distance.clamp(0, maxInitialSpeed);
+    final dir = rawV.distance == 0 ? Offset.zero : rawV / rawV.distance;
+    final initialV = dir * speed;
+    setState(() {
+      dragging = false;
+      velocity = initialV;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      areaSize = Size(constraints.maxWidth, constraints.maxHeight);
+      // 초기 위치 중앙
+      if (position == Offset.zero) {
+        position = Offset(areaSize.width / 2, areaSize.height / 2);
+      }
+      return GestureDetector(
+        onPanStart: _onPanStart,
+        onPanUpdate: _onPanUpdate,
+        onPanEnd: _onPanEnd,
+        child: CustomPaint(
+          size: areaSize,
+          painter: _BallPainter(position: position, radius: radius, dragging: dragging),
+          child: Container(
+            // 안내 텍스트
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.all(12),
+            child: const Text(
+              '드래그해서 던지세요 — 공은 중력과 튕김을 가집니다',
+              style: TextStyle(color: Colors.black54),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class _BallPainter extends CustomPainter {
+  final Offset position;
+  final double radius;
+  final bool dragging;
+  _BallPainter({required this.position, required this.radius, required this.dragging});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = dragging ? Colors.orangeAccent : Colors.blueAccent;
+    // 그림자
+    canvas.drawShadow(Path()..addOval(Rect.fromCircle(center: position.translate(6, 6), radius: radius)), Colors.black, 6, true);
+    canvas.drawCircle(position, radius, paint);
+
+    // 하이라이트
+    final highlight = Paint()..color = Colors.white.withOpacity(0.6);
+    canvas.drawCircle(position.translate(-radius * 0.3, -radius * 0.35), radius * 0.22, highlight);
+  }
+
+  @override
+  bool shouldRepaint(covariant _BallPainter old) {
+    return old.position != position || old.dragging != dragging;
+  }
+}
