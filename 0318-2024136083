@@ -1,0 +1,22 @@
+터미널(Terminal)이란??  텍스트 명령어로 컴퓨터를 조작하는 도구
+
+문제 1. 클로드 코드를 실행하기 위해 필수적으로 설치해야 하는 두 가지 프로그램을 고르세요.
+   ① Python과 Visual Studio Code
+   ② Node.js와 Git
+   ③ Docker와 Kubernetes
+   ④ Chrome과 Firefox
+ 정답: 2번
+
+문제 2. 윈도우 운영체제에서 터미널을 실행하는 명령어는 무엇일까요?
+   ① terminal
+   ② explorer
+   ③ cmd
+   ④ console
+정답: 3번 
+
+ 3. npm install -g @anthropic-ai/claude-code 에서 -g 옵션의 의미는?
+   ① Git과 연동하여 설치
+   ② 그래픽 모드로 설치
+   ③ 시스템 전체에서 사용 가능하도록 설치
+   ④ 게스트 모드로 설치
+   정답: 3번
