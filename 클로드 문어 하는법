@@ -1,0 +1,6 @@
+Node.js 설치하기: https://nodejs.org
+Git 설치하기: https://git-scm.com (기본으로 설치 안된다면 마지막에 View Release Notes 끄고 Launch Git Bash 켜야함)
+
+cmd에 git --version, node --version 쳐서 확인하기
+
+npm install -g @anthropic-ai/claude-code 이거 친 다음에 claude 하고 중간에 로그인? 계정연결하면 그때부터 질문 가능
