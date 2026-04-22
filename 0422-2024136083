@@ -1,0 +1,6 @@
+"기획 단계" 
+".planning/ 문서 5개 자동 생성 (비전, 요구사항, WBS, 일정, BONUS)" 
+"ADR-0001 ~ ADR-0004 작성" 
+"회의록(03-meeting-log.md) 자동 정리" 
+"주간 진행률 보고서(04-weekly-report.md) 자동 생성" 
+"모르는 영역 질문 목록(05-unknown-questions.md) 자동 추출" 
