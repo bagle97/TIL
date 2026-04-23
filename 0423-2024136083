@@ -1,0 +1,4 @@
+Sequential Thinking MCP 설치 명령어
+claude mcp add sequential-thinking -s local
+-- cmd /c npx -y
+@modelcontextprotocol/server-sequential-thinking@latest
