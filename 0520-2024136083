@@ -1,0 +1,21 @@
+기술 스택
+앱 프레임워크
+Flutter 3.x (Dart) — Android / iOS 단일 코드베이스
+AI / ML
+Google ML Kit Text Recognition — 영수증 OCR (온디바이스)
+Claude API claude-haiku-4-5 — OCR 텍스트 → JSON 파싱, 소비 패턴 코멘트 생성
+데이터
+SQLite (sqflite) — 로컬 지출 데이터 저장
+UI
+fl_chart — 카테고리별 파이 차트, 막대 그래프
+Material 3 디자인 시스템
+상태관리
+Provider — 지출 목록 전역 상태, 화면 간 데이터 전달
+주요 패키지
+dependencies:
+  camera: ^0.10.x           # 카메라 촬영
+  google_mlkit_text_recognition: ^0.13.x  # OCR
+  sqflite: ^2.x             # 로컬 DB
+  http: ^1.x                # Claude API 호출
+  fl_chart: ^0.68.x         # 통계 차트
+  provider: ^6.x            # 상태관리
