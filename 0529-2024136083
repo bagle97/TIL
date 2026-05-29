@@ -1,0 +1,22 @@
+기획 단계
+.planning/ 문서 5개 자동 생성 (비전, 요구사항, WBS, 일정, BONUS)
+ADR-0001 ~ ADR-0003 작성
+회의록(03-meeting-log.md) 자동 정리
+주간 진행률 보고서(04-weekly-report.md) 자동 생성
+모르는 영역 질문 목록(05-unknown-questions.md) 자동 추출
+설계 단계
+아키텍처 문서(docs/architecture.md) + Mermaid 다이어그램 생성
+개발환경 설정 가이드(docs/setup.md) 작성
+Flutter 4레이어 디렉토리 구조 설계
+구현 단계
+Flutter UI 목업 6개 화면 전체 코드 생성
+home_screen.dart — 요약 카드, AI 코멘트, 최근 지출
+stats_screen.dart — fl_chart 파이차트, 카테고리 막대
+camera_screen.dart — 촬영 시뮬레이션
+ocr_result_screen.dart — 파싱 결과 편집 화면
+expense_list_screen.dart — 지출 목록
+manual_input_screen.dart — 수동 입력
+Expense 모델 및 mock_data.dart 생성
+pubspec.yaml 의존성 추가 (fl_chart)
+빌드 오류 디버깅 (deprecated API, unused import 수정)
+Android SDK 라이선스 수락 절차 해결
