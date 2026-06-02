@@ -1,0 +1,1 @@
+카메라로 촬영 => ML Kit OCR로 텍스트 추출 => Claude API가 가게명,금액,카테고리를 파싱 => SQLite에 저장
