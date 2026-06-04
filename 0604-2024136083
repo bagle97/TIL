@@ -1,0 +1,7 @@
+dependencies:
+  camera: ^0.10.x           # 카메라 촬영
+  google_mlkit_text_recognition: ^0.13.x  # OCR
+  sqflite: ^2.x             # 로컬 DB
+  http: ^1.x                # Claude API 호출
+  fl_chart: ^0.68.x         # 통계 차트
+  provider: ^6.x            # 상태관리
